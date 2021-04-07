@@ -36,6 +36,7 @@ function App() {
         <p>Please input your task!</p>
         <div className="input-container">
           <input
+            aria-label="task-input"
             type="text"
             value={inputText}
             onChange={onTaskInput}
