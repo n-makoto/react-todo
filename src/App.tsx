@@ -1,32 +1,24 @@
 import React, { useState } from "react";
 import "./App.css";
+import TaskAdder from "./components/TaskAdder";
 
 function App() {
-  const [inputText, setInputText] = useState("");
   const [tasks, setTasks] = useState(["Greet your neighbor", "Eat breakfast"]);
 
-  const onTaskInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputText(e.target.value);
-  };
-  const addTask = () => {
-    const alreadyExistSameTask = tasks.some((task) => task === inputText);
-    if (alreadyExistSameTask) return false;
-    const newTasks = [...tasks, inputText];
-    setTasks(newTasks);
-    setInputText("");
-  };
-  const addTaskIfEnterPressed = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      addTask();
-    }
-  };
   const deleteTask = (i: number) => {
     const newTasks = tasks.filter((_task, index) => index !== i);
     setTasks(newTasks);
   };
+
   const deleteAllTask = () => {
     setTasks([]);
+  };
+
+  const onTaskAdd = (taskValue: string) => {
+    const alreadyExistSameTask = tasks.some((task) => task === taskValue);
+    if (alreadyExistSameTask) return false;
+    const newTasks = [...tasks, taskValue];
+    setTasks(newTasks);
   };
 
   return (
@@ -35,14 +27,7 @@ function App() {
         <h1>ToDoApp</h1>
         <p>Please input your task!</p>
         <div className="input-container">
-          <input
-            aria-label="task-input"
-            type="text"
-            value={inputText}
-            onChange={onTaskInput}
-            onKeyPress={addTaskIfEnterPressed}
-          />
-          <button onClick={addTask}>add</button>
+          <TaskAdder onTaskAdd={onTaskAdd} />
         </div>
         <ul className="todo-list">
           {tasks.map((task, index) => (
